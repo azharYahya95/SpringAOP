@@ -73,3 +73,57 @@ execution(modifiers-pattern? return-type-pattern declaring-type-pattern?
 @Before(""* processCreditCard*())
 ```
 
+##### Parameter Pattern Wildcards
+| Pattern | Explanation                                           |
+|---------|-------------------------------------------------------|
+| ()      | matches a method with no arguments                    |
+| (*)     | matches a method with one argument of any type        |
+| (..)    | matches a method with 0 or more arguments of any type |
+
+- Example
+1) Match on method parameters
+- Match addAccount methods with no arguments
+```
+@Before("execution(* addAccount())")
+```
+| example    | Type           |
+|------------|----------------|
+| *          | Return Type    |
+| addAccount | method         |
+| ()         | Param nor-args |
+
+2) Match on method parameters
+- Match addAccount methods that have Account param
+```
+@Before("execution(* addAccount(com.luv2code.aopdemo.Account))")
+```
+| example                        | Type        |
+|--------------------------------|-------------|
+| *                              | Return type |
+| addAccount                     | method      |
+| (com.luv2code.aopdemo.Account) | Param Type  |
+
+3) Match on method parameters (using wildcards)
+- Match addAccount methods with any number of arguments
+```
+@Before("execution(* addAccount(..))")
+```
+| example    | Type        |
+|------------|-------------|
+| *          | Return type |
+| addAccount | method      |
+| (..)       | Param Type  |
+
+4) Match on methods in a package
+- Match any method in our DAO package: com.luv2code.aopdemo.dao
+```
+@Before("execution(* com.luv2code.aopdemo.dao.*.*(..))")
+```
+| example                  | Type        |
+|--------------------------|-------------|
+| *                        | Return type |
+| com.luv2code.aopdemo.dao | package     |
+| .*                       | class       |
+| .*                       | Method      |
+| (..)                     | Param Type  |
+
