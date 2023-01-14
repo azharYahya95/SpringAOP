@@ -1,61 +1,46 @@
 ### Aspect-Oriented Programming
 
-#### Ordering Aspects
+#### joinPoints
 
-##### Overview
-1. To Control Order
-- Refactor: Place advices in separate Aspects
-- Control order on Aspects using @Order annotation
-- Guarantees order of when Aspects are applied
+##### Problem
+- How we can access method parameter when we are in aspect?
 
-2. Development Process
-- Refactor: Place advices in separate Aspects
-- Control order on Aspects using @Order annotation
-
-3. Code Example
-
-```java
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-
-@Aspect
-@Component
-@Order(1)
-public class MyCloudLogAspect {
+##### Step by Step Development Process
+1. Access and display Method Signature
+</br>*Java file*
+```
+@Before("...")
+public void beforeAddAccountAdvice(JoinPoint theJointPoint){
+    //display the method signature
+    MethodSignature methodSig = (MethodSignature) theJoinPoint.getSignature();
     
+    System.out.println("Method: "+ methodSig);
 }
 ```
-
-```java
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-
-@Aspect
-@Component
-@Order(2)
-public class MyLoggingDemoAspect{
-    
-}
+</br>*Output*
+```
+Method: void com.luv2code.aopdemo.dao.AccountDAO.addAccount(Account,boolean)
 ```
 
-```java
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-
-@Aspect
-@Component
-@Order(3)
-public class MyApiAnalyticsAspect {
-    
+2. Access and display Method Arguments
+</br>*Java file*
+```
+@Before("...")
+public void beforeAddAccountAdvice(JoinPoint theJoinPoint){
+  // display method arguments
+  
+  //get args
+  Object[] args = theJoinPoint.getArgs();
+  
+  // loop thru args 
+  for(Object tempArgs: args){
+    System.out.println(tempArgs);
+  }
 }
 ```
+</br>*Output*
+```
+com.luv2code.aopdemo.Account@1ce24091
 
-4. @Order annotation
-- Lower numbers have higher precedence
-  - Range: Integer.MIN_VALUE tp Integer.MAX_VALUE
-  - Negative numbers are allowed
-  - Does not have to be consecutive
-
+true
+```

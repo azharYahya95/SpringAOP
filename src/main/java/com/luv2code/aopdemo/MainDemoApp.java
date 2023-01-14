@@ -15,7 +15,7 @@ public class MainDemoApp {
         AccountDAO theAccountDAO = context.getBean("accountDAO", AccountDAO.class);
 
         //call the business method
-        theAccountDAO.addAccount(new Account(), true);
+        theAccountDAO.addAccount(new Account("Axhar", "Gold"), true);
 
         theAccountDAO.doWork();
 
