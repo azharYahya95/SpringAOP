@@ -1,46 +1,36 @@
 ### Aspect-Oriented Programming
 
-#### joinPoints
+#### @AfterReturning Advice Type
 
-##### Problem
-- How we can access method parameter when we are in aspect?
+##### Use Cases
+- Most Common
+  - logging, security, transactions
+- Audit logging
+  - who, what, when, where
+- Post-processing Data
+  - Post process the data before returning to caller
 
-##### Step by Step Development Process
-1. Access and display Method Signature
-</br>*Java file*
+##### code example
+
 ```
-@Before("...")
-public void beforeAddAccountAdvice(JoinPoint theJointPoint){
-    //display the method signature
-    MethodSignature methodSig = (MethodSignature) theJoinPoint.getSignature();
-    
-    System.out.println("Method: "+ methodSig);
+@AfterReturning("execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))")
+public void afterReturningFindAccountsAdvice(){
+  System.out.println("Executing @AfterReturning advice");
 }
 ```
-</br>*Output*
-```
-Method: void com.luv2code.aopdemo.dao.AccountDAO.addAccount(Account,boolean)
-```
 
-2. Access and display Method Arguments
-</br>*Java file*
+##### code Example (Access the return Value)
+
 ```
-@Before("...")
-public void beforeAddAccountAdvice(JoinPoint theJoinPoint){
-  // display method arguments
-  
-  //get args
-  Object[] args = theJoinPoint.getArgs();
-  
-  // loop thru args 
-  for(Object tempArgs: args){
-    System.out.println(tempArgs);
-  }
+import org.aspectj.lang.annotation.AfterReturning;
+
+@AfterReturning(
+        pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))",
+        returning = "result"
+)
+public void afterRturningFindAccountsAdvice(
+        JoinPoint theJoinPoint, List<Account> result){
+    System.out.println("\n=====>>> result is: "+result);
 }
-```
-</br>*Output*
-```
-com.luv2code.aopdemo.Account@1ce24091
 
-true
 ```
