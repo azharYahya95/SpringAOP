@@ -1,36 +1,36 @@
 ### Aspect-Oriented Programming
 
-#### @AfterReturning Advice Type
+#### @AfterThrowing Advice Type
 
 ##### Use Cases
-- Most Common
-  - logging, security, transactions
-- Audit logging
-  - who, what, when, where
-- Post-processing Data
-  - Post process the data before returning to caller
+- Log the exception
+- Perform auditing on the exception
+- Notify DevOps team via email or SMS
+- Encapsulate this functionality in AOP aspect for easy reuse
 
-##### code example
+##### Code Example
 
 ```
-@AfterReturning("execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))")
-public void afterReturningFindAccountsAdvice(){
-  System.out.println("Executing @AfterReturning advice");
+import org.aspectj.lang.annotation.AfterThrowing;
+
+@AfterThrowing("execution (* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))")
+public void afterThrowingFindAccountsAdvice(){
+      System.out.println("Executing @AfterThrowing advice");
 }
 ```
 
-##### code Example (Access the return Value)
+##### Access the Exception
 
 ```
-import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 
-@AfterReturning(
+@AfterThrowing(
         pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))",
-        returning = "result"
+        throwing = "theExc"
 )
-public void afterRturningFindAccountsAdvice(
-        JoinPoint theJoinPoint, List<Account> result){
-    System.out.println("\n=====>>> result is: "+result);
+public void afterThrowingFindAccountsAdvice(
+      JoinPoint theJoinPoint, throwable theExc){
+    // log the exception
+    System.out.println("\n=====>>>> The Exception is: "+ theExc);
 }
-
 ```
