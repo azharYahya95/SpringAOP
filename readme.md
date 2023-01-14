@@ -1,70 +1,61 @@
 ### Aspect-Oriented Programming
 
-#### Pointcut Declaration
-- create a pointcut declaration once and apply it to multiple advices
+#### Ordering Aspects
 
-##### Sample Code
+##### Overview
+1. To Control Order
+- Refactor: Place advices in separate Aspects
+- Control order on Aspects using @Order annotation
+- Guarantees order of when Aspects are applied
+
+2. Development Process
+- Refactor: Place advices in separate Aspects
+- Control order on Aspects using @Order annotation
+
+3. Code Example
 
 ```java
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class MyDemoLoggingAspect {
-
-    @Pointcut("execution(* com.luv2code.aopdemo.dao.*.*(..))")
-    private void forDaoPackage() {
-    }
-
-    @Before("forDaoPackage")
-    public void beforeAddAccountAdvice(){
-        
-    }
+@Order(1)
+public class MyCloudLogAspect {
     
-    @Before("forDaoPackage")
-    public void performApiAnalytics(){
-        
-    }
 }
 ```
 
-##### Benefit of Pointcut Declarations
-- Easily reuse pointcut expressions
-- Update pointcut in one location
-- Can also share and combine pointcut expressions (coming up later)
+```java
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
-##### Combine Pointcut Expressions
-- combine pointcut expressions using logic operators
-  - AND (&&)
-  - OR (||)
-  - NOT (!)
-- Example
-
-```
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-
-@Pointcut("execution(* com.luv2code.aopdemo.dao.*.*(..))")
-private void forDaoPackage(){}
-
-// create pointcut for getter methods
-@Pointcut("execution(* com.luv2code.aopdemo.dao.*.get*(..))")
-private void getter(){}
-
-// create pointcut for setter methods
-@Pointcut("execution(* com.luv2code.aopdemo.dao.*.set*(..))")
-private void setter(){}
-
-// combine pointcut: include package ... exclude getter/setter
-@Pointcut("forDaoPackage()" && !(getter() || setter()))
-private void forDaoPackageNoGetterSetter(){}
-
-@Before("forDaoPackageNoGetterSetter()")
-public void beforeAddAccountAdvice(){
-//...    
+@Aspect
+@Component
+@Order(2)
+public class MyLoggingDemoAspect{
+    
 }
 ```
-xw
+
+```java
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+@Order(3)
+public class MyApiAnalyticsAspect {
+    
+}
+```
+
+4. @Order annotation
+- Lower numbers have higher precedence
+  - Range: Integer.MIN_VALUE tp Integer.MAX_VALUE
+  - Negative numbers are allowed
+  - Does not have to be consecutive
+
