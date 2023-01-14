@@ -1,129 +1,70 @@
 ### Aspect-Oriented Programming
 
-#### AOP Pointcut Expression
+#### Pointcut Declaration
+- create a pointcut declaration once and apply it to multiple advices
 
-##### Pointcut Expression Language
-- Spring AOP uses AspectJ's pointcut expression language
-- We will start with execution pointcuts
-  - Applies to execution of methods
-```
-execution(modifiers-pattern? return-type-pattern declaring-type-pattern?
-          method-name-pattern(param-pattern) throws-pattern?)
-```
-- The pattern is option if has '?'
+##### Sample Code
 
-##### Pointcut Expression Examples
-1. Example 1: Match on method names
-- Match only addAccount() method in AccountDAO class
-```
-@Before("execution(public void com.luv2code.aopdemo.dao.AccountDAO.addAccount())")
-```
-|example|Type|
-|---|---|
-|public|modifer|
-|void|Return Type|
-|com.luv2code.aopdemo.dao.AccountDAO|Declaring Type|
-|addAccount()|Method|
+```java
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 
-2. Example2: Match on Method Names
-- Match any addAccount() method in any class
-```
-@Before("execution(public void addAccount())")
-```
-|example|Type|
-|---|---|
-|public|Modifier|
-|void|Return Type|
-|addAccount()|Method|
+@Aspect
+@Component
+public class MyDemoLoggingAspect {
 
-3. Example 3: Match on method names (using wildcards)
-- match methods starting with add in any class
-```
-@Before("execution(public void add*())")
-```
-|example|Type|
-|---|---|
-|public|Modifier|
-|void|Return Type|
-|add*|Method|
+    @Pointcut("execution(* com.luv2code.aopdemo.dao.*.*(..))")
+    private void forDaoPackage() {
+    }
 
-4. Example 4: Match on method names (using wildcards)
-- Match methods starting with processCreditCard in any class
-```
-@Before("execution(public VerificationResult processCreditCard*())")
-```
-|example|Type|
-|---|---|
-|public|Modifier|
-|VerificationResult|Return Type|
-|processCreditCard*()|Method|
-
-5. Example 5: use wildcards on return type
-```
-@Before("execution(public * processCreditCard*())")
-```
-|example|Type|
-|---|---|
-|public|Modifier|
-|*|Return type|
-|processCreditCard*()|Method|
-
-6. Example 6: Modifier is Optional
-```
-@Before(""* processCreditCard*())
+    @Before("forDaoPackage")
+    public void beforeAddAccountAdvice(){
+        
+    }
+    
+    @Before("forDaoPackage")
+    public void performApiAnalytics(){
+        
+    }
+}
 ```
 
-##### Parameter Pattern Wildcards
-| Pattern | Explanation                                           |
-|---------|-------------------------------------------------------|
-| ()      | matches a method with no arguments                    |
-| (*)     | matches a method with one argument of any type        |
-| (..)    | matches a method with 0 or more arguments of any type |
+##### Benefit of Pointcut Declarations
+- Easily reuse pointcut expressions
+- Update pointcut in one location
+- Can also share and combine pointcut expressions (coming up later)
 
+##### Combine Pointcut Expressions
+- combine pointcut expressions using logic operators
+  - AND (&&)
+  - OR (||)
+  - NOT (!)
 - Example
-1) Match on method parameters
-- Match addAccount methods with no arguments
-```
-@Before("execution(* addAccount())")
-```
-| example    | Type           |
-|------------|----------------|
-| *          | Return Type    |
-| addAccount | method         |
-| ()         | Param nor-args |
 
-2) Match on method parameters
-- Match addAccount methods that have Account param
 ```
-@Before("execution(* addAccount(com.luv2code.aopdemo.Account))")
-```
-| example                        | Type        |
-|--------------------------------|-------------|
-| *                              | Return type |
-| addAccount                     | method      |
-| (com.luv2code.aopdemo.Account) | Param Type  |
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 
-3) Match on method parameters (using wildcards)
-- Match addAccount methods with any number of arguments
-```
-@Before("execution(* addAccount(..))")
-```
-| example    | Type        |
-|------------|-------------|
-| *          | Return type |
-| addAccount | method      |
-| (..)       | Param Type  |
+@Pointcut("execution(* com.luv2code.aopdemo.dao.*.*(..))")
+private void forDaoPackage(){}
 
-4) Match on methods in a package
-- Match any method in our DAO package: com.luv2code.aopdemo.dao
-```
-@Before("execution(* com.luv2code.aopdemo.dao.*.*(..))")
-```
-| example                  | Type        |
-|--------------------------|-------------|
-| *                        | Return type |
-| com.luv2code.aopdemo.dao | package     |
-| .*                       | class       |
-| .*                       | Method      |
-| (..)                     | Param Type  |
+// create pointcut for getter methods
+@Pointcut("execution(* com.luv2code.aopdemo.dao.*.get*(..))")
+private void getter(){}
 
+// create pointcut for setter methods
+@Pointcut("execution(* com.luv2code.aopdemo.dao.*.set*(..))")
+private void setter(){}
+
+// combine pointcut: include package ... exclude getter/setter
+@Pointcut("forDaoPackage()" && !(getter() || setter()))
+private void forDaoPackageNoGetterSetter(){}
+
+@Before("forDaoPackageNoGetterSetter()")
+public void beforeAddAccountAdvice(){
+//...    
+}
+```
+xw

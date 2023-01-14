@@ -19,6 +19,13 @@ public class MainDemoApp {
 
         theAccountDAO.doWork();
 
+        //call the accountdao getter/setter methods
+        theAccountDAO.setName("Azhar");
+        theAccountDAO.setServiceCode("silver");
+
+        String name = theAccountDAO.getName();
+        String code = theAccountDAO.getServiceCode();
+
         // get Membership bean from spring container
         MembershipDAO theMembershipDAO =
                 context.getBean("membershipDAO", MembershipDAO.class);
