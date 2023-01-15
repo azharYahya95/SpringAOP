@@ -2,6 +2,7 @@ package com.luv2code.aopdemo.aspect;
 
 import com.luv2code.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
@@ -13,6 +14,43 @@ import java.util.List;
 @Component
 @Order(3)
 public class MyDemoLoggingAspect {
+
+    @Around("execution(* com.luv2code.aopdemo.service.*.getFortune(..))")
+    public Object aroundGetFortune(
+            ProceedingJoinPoint theProceedingJoinPoint
+    )throws Throwable{
+        // print out ,ethod we are advising on
+        String method = theProceedingJoinPoint.getSignature().toShortString();
+        System.out.println("\n====>>>> Executing @Around on method: "+method);
+
+        // get begin timestamp
+        long begin = System.currentTimeMillis();
+
+        // execute method
+        Object result = null;
+
+        try {
+            result = theProceedingJoinPoint.proceed();
+        }catch (Exception e){
+            // log the exception
+            System.out.println(e.getMessage());
+
+            //give user a custom message
+            /*result = "Major accident! But now worries" +
+                    "But dont worry, your private helicropter is on the way";*/
+            throw e;
+        }
+
+        // get end timestamp
+        long end = System.currentTimeMillis();
+
+        // compute duration and display it
+        long duration = end - begin;
+
+        System.out.println("\n=====> Duration: "+duration / 1000.0 +" seconds");
+
+        return result;
+    }
 
     @After("execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))")
     public void afterFinallyFindAccountsAdvice(JoinPoint theJointPoint){

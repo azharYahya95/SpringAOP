@@ -1,30 +1,69 @@
 ### Aspect-Oriented Programming
 
-#### @After Advice Type
-- it work just like finally block
-- will run either failure or success
+#### @Around Advice Type
+- execute code before we make method call and can get result after method is complete
+- it like combination of @Before and @After
 
 ##### Use Cases
-- Log the exception and/or perform auditing
-- Code to run regardless of method outcome
-- Encapsulate this functionality in AOP aspect for easy reuse
+- Most common: logging, auditing, security
+- Pre-processing and post-processing data
+- Instrumentation / profiling code
+  - How long does it take for a section of code to run?
+- Managing exceptions
+  - Swallow / handle / stop exceptions
 
-##### Code Example
+##### ProceedingJoinPoint
+- When using @Around advice
+  - You will get a reference to a "proceeding join point"
+- This is a handle to the target method
+- your code can use the proceeding join point to execute target method
+
+##### code example
 
 ```
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
 
-@After("execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))")
-public void afterFinallyFindAccountsAdvice(){
-    System.out.println("Executing @After (finally) advice");
+@Around("execution(* com.luv2code.aopdemo.service.*.getFortune(..))")
+public Object afterGetFortune(
+    ProceedingJoinPoint theProceedingJoinPoint) throws Throwable{
+    // get begin timestamp
+    long begin = System.currentTimeMillis();
+    
+    //execute the method
+    Object result = theProceedingJoinPoint.proceed();
+    
+    // get end timestamp
+    long end = System.currentTimeMillis();
+    
+    // compute duration and display it
+    long duration = end - begin;
+    System.out.println("\n====> Duration: "+ duration +" milliseconds");
+    
+    return result;
 }
 ```
 
-##### Tips
-- The @After advice does not have access to the exception
-  - if you need exception, then use @AfterThrowing advice
+##### Code Example (Handling Exception)
 
-- The @After advice should be able to run in the case of success or error
-  - Your code should not depend on happy path or an exception
-  - Logging / auditing is the easiest case here
+```
+import org.aspectj.lang.annotation.Around;
 
+@Around("execution(* com.luv2code.aopdemo.service.*.getFortune(..))")
+public Object afterGetFortune(
+        ProceedingJoinPoint theProceedingJoinPoint)throws Throwable{
+    Object result = null;
+    
+    try{
+      // lets execute the method
+      result = theProceedingJoinPoint.proceed();
+      
+    }catch (Exception exc){
+      // log exception
+      System.out.println("@Around advice: We have a problem "+exc);
+      
+      // handle and give default fortune ... use this approach with caution
+      result = "Nothing exciting here. Move along!";
+    }
+  return result;
+}
+```
