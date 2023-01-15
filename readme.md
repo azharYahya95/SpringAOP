@@ -1,36 +1,30 @@
 ### Aspect-Oriented Programming
 
-#### @AfterThrowing Advice Type
+#### @After Advice Type
+- it work just like finally block
+- will run either failure or success
 
 ##### Use Cases
-- Log the exception
-- Perform auditing on the exception
-- Notify DevOps team via email or SMS
+- Log the exception and/or perform auditing
+- Code to run regardless of method outcome
 - Encapsulate this functionality in AOP aspect for easy reuse
 
 ##### Code Example
 
 ```
-import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.After;
 
-@AfterThrowing("execution (* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))")
-public void afterThrowingFindAccountsAdvice(){
-      System.out.println("Executing @AfterThrowing advice");
+@After("execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))")
+public void afterFinallyFindAccountsAdvice(){
+    System.out.println("Executing @After (finally) advice");
 }
 ```
 
-##### Access the Exception
+##### Tips
+- The @After advice does not have access to the exception
+  - if you need exception, then use @AfterThrowing advice
 
-```
-import org.aspectj.lang.annotation.AfterThrowing;
+- The @After advice should be able to run in the case of success or error
+  - Your code should not depend on happy path or an exception
+  - Logging / auditing is the easiest case here
 
-@AfterThrowing(
-        pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))",
-        throwing = "theExc"
-)
-public void afterThrowingFindAccountsAdvice(
-      JoinPoint theJoinPoint, throwable theExc){
-    // log the exception
-    System.out.println("\n=====>>>> The Exception is: "+ theExc);
-}
-```
