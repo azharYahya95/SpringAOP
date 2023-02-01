@@ -1,11 +1,12 @@
-package com.luv2code.aopdemo;
+package com.azharkpi.aopdemo;
 
-import com.luv2code.aopdemo.dao.AccountDAO;
+import com.azharkpi.aopdemo.dao.AccountDAO;
+import com.azharkpi.aopdemo.dao.AccountDAO;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
 
-public class AfterReturningDemoApp {
+public class AfterFinallyDemoApp {
 
     public static void main(String[] args) {
         // read spring config java class
@@ -16,10 +17,18 @@ public class AfterReturningDemoApp {
         AccountDAO theAccountDAO = context.getBean("accountDAO", AccountDAO.class);
 
         // call method to find the accounts
-        List<Account> theAccounts = theAccountDAO.findAccounts(false);
+        List<Account> theAccounts = null;
+
+        try {
+            // add a boolean flag to simulate exceptions
+            boolean tripWire = false;
+            theAccounts = theAccountDAO.findAccounts(tripWire);
+        }catch (Exception exc){
+            System.out.println("\n\n Main Program.. caught Exception: "+exc);
+        }
 
         // display the Accounts
-        System.out.println("\n\n Main Program: AfterReturningDemoApp");
+        System.out.println("\n\n Main Program: AfterThrowingDemoApp");
         System.out.println("---");
 
         System.out.println(theAccounts);

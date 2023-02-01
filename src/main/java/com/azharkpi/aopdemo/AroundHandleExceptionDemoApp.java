@@ -1,6 +1,7 @@
-package com.luv2code.aopdemo;
+package com.azharkpi.aopdemo;
 
-import com.luv2code.aopdemo.service.TrafficFortuneService;
+import com.azharkpi.aopdemo.service.TrafficFortuneService;
+import com.azharkpi.aopdemo.service.TrafficFortuneService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class AroundHandleExceptionDemoApp {
