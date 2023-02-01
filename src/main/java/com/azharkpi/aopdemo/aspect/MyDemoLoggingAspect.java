@@ -1,4 +1,4 @@
-package com.luv2code.aopdemo.aspect;
+package com.azharkpi.aopdemo.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class MyDemoLoggingAspect {
 
     // lets start with an @Before advice
-    @Before("com.luv2code.aopdemo.aspect.LuvAopExpressions.forDaoPackageNoGetterSetter()")
+    @Before("com.azharkpi.aopdemo.aspect.LuvAopExpressions.forDaoPackageNoGetterSetter()")
     public void beforeAddAccountAdvice(){
         System.out.println("\n=====>>> Execution @Before advice on addAccount()");
     }

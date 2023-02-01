@@ -1,4 +1,4 @@
-package com.luv2code.aopdemo;
+package com.azharkpi.aopdemo;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -6,6 +6,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan("com.luv2code.aopdemo")
+@ComponentScan("com.azharkpi.aopdemo")
 public class DemoConfig {
 }
