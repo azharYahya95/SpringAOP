@@ -16,13 +16,13 @@ execution(modifiers-pattern? return-type-pattern declaring-type-pattern?
 1. Example 1: Match on method names
 - Match only addAccount() method in AccountDAO class
 ```
-@Before("execution(public void com.luv2code.aopdemo.dao.AccountDAO.addAccount())")
+@Before("execution(public void com.azharkpi.aopdemo.dao.AccountDAO.addAccount())")
 ```
 |example|Type|
 |---|---|
 |public|modifer|
 |void|Return Type|
-|com.luv2code.aopdemo.dao.AccountDAO|Declaring Type|
+|com.azharkpi.aopdemo.dao.AccountDAO|Declaring Type|
 |addAccount()|Method|
 
 2. Example2: Match on Method Names
@@ -95,13 +95,13 @@ execution(modifiers-pattern? return-type-pattern declaring-type-pattern?
 2) Match on method parameters
 - Match addAccount methods that have Account param
 ```
-@Before("execution(* addAccount(com.luv2code.aopdemo.Account))")
+@Before("execution(* addAccount(com.azharkpi.aopdemo.Account))")
 ```
 | example                        | Type        |
 |--------------------------------|-------------|
 | *                              | Return type |
 | addAccount                     | method      |
-| (com.luv2code.aopdemo.Account) | Param Type  |
+| (com.azharkpi.aopdemo.Account) | Param Type  |
 
 3) Match on method parameters (using wildcards)
 - Match addAccount methods with any number of arguments
@@ -115,14 +115,14 @@ execution(modifiers-pattern? return-type-pattern declaring-type-pattern?
 | (..)       | Param Type  |
 
 4) Match on methods in a package
-- Match any method in our DAO package: com.luv2code.aopdemo.dao
+- Match any method in our DAO package: com.azharkpi.aopdemo.dao
 ```
-@Before("execution(* com.luv2code.aopdemo.dao.*.*(..))")
+@Before("execution(* com.azharkpi.aopdemo.dao.*.*(..))")
 ```
 | example                  | Type        |
 |--------------------------|-------------|
 | *                        | Return type |
-| com.luv2code.aopdemo.dao | package     |
+| com.azharkpi.aopdemo.dao | package     |
 | .*                       | class       |
 | .*                       | Method      |
 | (..)                     | Param Type  |
