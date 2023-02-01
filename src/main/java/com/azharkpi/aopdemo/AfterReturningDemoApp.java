@@ -1,9 +1,6 @@
-package com.luv2code.aopdemo;
+package com.azharkpi.aopdemo;
 
-import com.luv2code.aopdemo.Account;
-import com.luv2code.aopdemo.DemoConfig;
-import com.luv2code.aopdemo.dao.AccountDAO;
-import com.luv2code.aopdemo.dao.MembershipDAO;
+import com.azharkpi.aopdemo.dao.AccountDAO;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
