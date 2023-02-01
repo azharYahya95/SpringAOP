@@ -22,9 +22,9 @@ public class AccountDAO {
         List<Account> myAccounts = new ArrayList<>();
 
         //create sample accounts
-        Account temp1 = new Account("John", "silver");
-        Account temp2 = new Account("Madhu", "Platinum");
-        Account temp3 = new Account("Azhar", "Gold");
+        Account temp1 = new Account("Azhar", "silver");
+        Account temp2 = new Account("Yahya", "Platinum");
+        Account temp3 = new Account("Muhammad", "Gold");
 
         //add them to our accounts list
         myAccounts.add(temp1);
