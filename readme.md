@@ -32,7 +32,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan("com.luv2code.aopdemo")
+@ComponentScan("com.azharkpi.aopdemo")
 public class DemoConfig(){
     
 }
