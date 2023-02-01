@@ -1,6 +1,6 @@
-package com.luv2code.aopdemo.aspect;
+package com.azharkpi.aopdemo.aspect;
 
-import com.luv2code.aopdemo.Account;
+import com.azharkpi.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -15,7 +15,7 @@ import java.util.List;
 public class MyDemoLoggingAspect {
 
     @AfterThrowing(
-            pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))",
+            pointcut = "execution(* com.azharkpi.aopdemo.dao.AccountDAO.findAccounts(..))",
             throwing = "theExc"
     )
     public void afterThrowingFindAccountsAdvice(
@@ -33,7 +33,7 @@ public class MyDemoLoggingAspect {
 
     // add a new advice for @AfterReturning on the findAccounts method
     @AfterReturning(
-            pointcut = "execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))",
+            pointcut = "execution(* com.azharkpi.aopdemo.dao.AccountDAO.findAccounts(..))",
             returning = "result"
     )
     public  void afterReturningFindAccountsAdvice(
@@ -67,7 +67,7 @@ public class MyDemoLoggingAspect {
     }
 
     // lets start with an @Before advice
-    @Before("com.luv2code.aopdemo.aspect.LuvAopExpressions.forDaoPackageNoGetterSetter()")
+    @Before("com.azharkpi.aopdemo.aspect.LuvAopExpressions.forDaoPackageNoGetterSetter()")
     public void beforeAddAccountAdvice(JoinPoint theJoinPoint){
         System.out.println("\n=====>>> Execution @Before advice on addAccount()");
 
