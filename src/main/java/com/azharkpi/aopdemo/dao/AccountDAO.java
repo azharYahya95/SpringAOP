@@ -17,8 +17,8 @@ public class AccountDAO {
         List<Account> myAccounts = new ArrayList<>();
 
         //create sample accounts
-        Account temp1 = new Account("John", "silver");
-        Account temp2 = new Account("Madhu", "Platinum");
+        Account temp1 = new Account("Muhammad", "silver");
+        Account temp2 = new Account("Yahya", "Platinum");
         Account temp3 = new Account("Azhar", "Gold");
 
         //add them to our accounts list
